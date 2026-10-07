@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Intelligent Visual Recognition Suite: Real-Time Manufacturing Defect Detection
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
@@ -135,3 +136,7 @@ docker-compose up --build
 ## 📄 License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+=======
+# Defect-detector
+An industrial-grade computer vision suite for real-time manufacturing surface defect detection using Deep CNNs, Two-Stage Transfer Learning (ResNet50V2), Edge MobileNetV3, and Grad-CAM explainability with sub-20ms latency.
+>>>>>>> 1c20bd925f1718d85aaf71abdcbc1da5ab7502eb
