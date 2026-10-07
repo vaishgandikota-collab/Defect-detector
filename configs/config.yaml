@@ -1,0 +1,145 @@
+dataset:
+  name: "NEU Surface Defect Database (Manufacturing Surface Inspection)"
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  train_dir: "data/train"
+  val_dir: "data/validation"
+  test_dir: "data/test"
+  image_size: [224, 224]
+  channels: 3
+  num_classes: auto  # Automatically inferred from directory structure
+  validation_split: 0.15
+  test_split: 0.15
+  classes:
+    - "crazing"
+    - "inclusion"
+    - "patches"
+    - "pitted_surface"
+    - "rolled-in_scale"
+    - "scratches"
+    - "normal"
+
+preprocessing:
+  normalize: true
+  normalization_type: "rescaling"  # "rescaling" to [0, 1] or "zscore"
+  cache_data: true
+  prefetch_buffer: -1  # AUTOTUNE
+
+augmentation:
+  enabled: true
+  horizontal_flip: true
+  vertical_flip: true
+  rotation_factor: 0.15
+  zoom_factor: 0.1
+  contrast_factor: 0.1
+  brightness_factor: 0.1
+  translation_factor: 0.08
+
+models:
+  baseline:
+    name: "baseline_cnn"
+    conv_filters: [32, 64, 128]
+    dense_units: 128
+    dropout_rate: 0.3
+    use_batch_norm: true
+    l2_reg: 0.0001
+  
+  transfer:
+    name: "resnet50_v2"
+    backbone: "ResNet50V2"  # ResNet50, ResNet50V2, MobileNetV2, EfficientNetB0
+    weights: "imagenet"
+    dense_units: 256
+    dropout_rate: 0.4
+    fine_tune_layers: 25
+    fine_tune_lr: 0.00005
+  
+  deployment:
+    name: "mobilenet_v3_small"
+    backbone: "MobileNetV3Small"
+    weights: "imagenet"
+    dense_units: 128
+    dropout_rate: 0.2
+    fine_tune_layers: 15
+    fine_tune_lr: 0.0001
+
+training:
+  batch_size: 32
+  epochs: 25
+  learning_rate: 0.001
+  optimizer: "adam"  # adam, sgd, rmsprop
+  loss: "categorical_crossentropy"
+  seed: 42
+  early_stopping:
+    patience: 7
+    min_delta: 0.001
+    monitor: "val_loss"
+    restore_best_weights: true
+  reduce_lr:
+    factor: 0.5
+    patience: 3
+    min_lr: 0.000001
+    monitor: "val_loss"
+
+tuning:
+  method: "optuna"  # optuna or kerastuner
+  n_trials: 15
+  epochs_per_trial: 10
+  objective: "val_accuracy"
+  direction: "maximize"
+
+ablation:
+  experiments:
+    - name: "A_No_Regularization"
+      dropout: 0.0
+      batch_norm: false
+      l2_reg: 0.0
+      augmentation: false
+    - name: "B_Dropout_Only"
+      dropout: 0.4
+      batch_norm: false
+      l2_reg: 0.0
+      augmentation: false
+    - name: "C_BatchNorm_Only"
+      dropout: 0.0
+      batch_norm: true
+      l2_reg: 0.0
+      augmentation: false
+    - name: "D_L2_Only"
+      dropout: 0.0
+      batch_norm: false
+      l2_reg: 0.001
+      augmentation: false
+    - name: "E_Augmentation_Only"
+      dropout: 0.0
+      batch_norm: false
+      l2_reg: 0.0
+      augmentation: true
+    - name: "F_Combined_All"
+      dropout: 0.3
+      batch_norm: true
+      l2_reg: 0.0001
+      augmentation: true
+
+paths:
+  models_dir: "models"
+  best_model_path: "models/best_model.keras"
+  class_names_path: "models/class_names.json"
+  metadata_path: "models/model_metadata.json"
+  reports_dir: "reports"
+  figures_dir: "reports/figures"
+  dataset_report: "reports/dataset_report.json"
+  classification_report: "reports/classification_report.csv"
+  experiment_results: "reports/experiment_results.csv"
+  ablation_results: "experiments/ablation/ablation_results.csv"
+  tuning_results: "experiments/hyperparameter/tuning_results.csv"
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  reload: false
+
+ui:
+  theme: "light"
+  primary_color: "#2563EB"
+  background_color: "#F8FAFC"
+  card_color: "#FFFFFF"

@@ -1,0 +1,35 @@
+{
+  "exists": true,
+  "directory": "data",
+  "total_images": 245,
+  "num_classes": 7,
+  "classes": [
+    "crazing",
+    "inclusion",
+    "normal",
+    "patches",
+    "pitted_surface",
+    "rolled-in_scale",
+    "scratches"
+  ],
+  "class_counts": {
+    "crazing": 35,
+    "inclusion": 35,
+    "normal": 35,
+    "patches": 35,
+    "pitted_surface": 35,
+    "rolled-in_scale": 35,
+    "scratches": 35
+  },
+  "imbalance_ratio": 1.0,
+  "is_imbalanced": false,
+  "corrupted_count": 0,
+  "corrupted_files": [],
+  "unsupported_count": 0,
+  "unsupported_files": [],
+  "duplicate_count": 0,
+  "duplicate_files": [],
+  "undersized_count": 0,
+  "undersized_files": [],
+  "is_healthy": true
+}

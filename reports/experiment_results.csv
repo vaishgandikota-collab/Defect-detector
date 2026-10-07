@@ -1,0 +1,4 @@
+model_name,model_path,test_accuracy,macro_f1,macro_precision,macro_recall,avg_latency_ms,throughput_fps,total_parameters,model_size_mb
+Baseline CNN,models\baseline\baseline_model.keras,0.1429,0.0357,0.0204,0.1429,76.03,13.15,111719,1.35
+MobileNetV3 (Edge),models\deployment\mobilenet_model.keras,0.9143,0.9123,0.9286,0.9143,479.16,2.09,1016183,5.0
+ResNet50V2 (Transfer),models\transfer\transfer_model.keras,0.9714,0.9711,0.9762,0.9714,883.27,1.13,24099335,96.64
